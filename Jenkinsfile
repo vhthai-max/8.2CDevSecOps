@@ -24,7 +24,7 @@ pipeline {
       emailext(
         subject: "Jenkins Build: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
         body: "Build result: ${currentBuild.currentResult}\nConsole: ${env.BUILD_URL}",
-        to: "YOUR_EMAIL_HERE"
+        to: "thaiviethuy1112@gmail.com"
       )
     }
   }
