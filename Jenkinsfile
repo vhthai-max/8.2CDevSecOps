@@ -27,3 +27,13 @@ pipeline {
         }
     }
 }
+post {
+    always {
+        emailext (
+            subject: "Build Result: ${currentBuild.currentResult}",
+            body: "Build finished with status: ${currentBuild.currentResult}",
+            to: "yourgmail@gmail.com",
+            attachLog: true
+        )
+    }
+}
