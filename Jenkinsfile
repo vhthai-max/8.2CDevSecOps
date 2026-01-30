@@ -1,39 +1,31 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npm test || true'
-            }
-        }
-
-        stage('Security Scan - npm audit') {
-            steps {
-                sh 'npm audit || true'
-            }
-        }
+  stages {
+    stage('Install Dependencies') {
+      steps { sh 'npm install' }
     }
-}
-post {
+
+    stage('Run Tests') {
+      steps {
+        sh 'npm test || true'
+      }
+    }
+
+    stage('Security Scan - npm audit') {
+      steps {
+        sh 'npm audit || true'
+      }
+    }
+  }
+
+  post {
     always {
-        emailext (
-            subject: "Build Result: ${currentBuild.currentResult}",
-            body: "Build finished with status: ${currentBuild.currentResult}",
-            to: "yourgmail@gmail.com",
-            attachLog: true
-        )
+      emailext(
+        subject: "Jenkins Build: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+        body: "Build result: ${currentBuild.currentResult}\nConsole: ${env.BUILD_URL}",
+        to: "YOUR_EMAIL_HERE"
+      )
     }
+  }
 }
